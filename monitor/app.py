@@ -3,7 +3,7 @@ import requests
 from flask_restful import Api
 from flask_apscheduler import APScheduler
 from monitor import create_app
-from .modelos import db,HealthyCheck
+from .modelos import db,HealthyCheck, Notifier
 
 app = create_app('default')
 app_context = app.app_context()
@@ -24,6 +24,8 @@ def do_healthcheck():
     except requests.exceptions.HTTPError as err:
         nuevo_check = HealthyCheck(status_code=err.response.status_code, date="{}".format(datetime.utcnow()))
         nuevo_check.save()
+        notifier = Notifier()
+        notifier.send_error_notification('Reportes', err.response.status_code, err.response.reason)
         return err.response.status_code
 
 scheduler = APScheduler()
