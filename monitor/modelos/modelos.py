@@ -4,12 +4,12 @@ import requests
 db = MongoEngine()
 
 class HealthyCheck(db.Document):
-    status = db.StringField()
+    status_code = db.IntField()
     date = db.StringField()
 
     def to_json(self):
         return {
-            'status': self.status,
+            'status': self.status_code,
             'date': self.date
         }
 
