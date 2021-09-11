@@ -14,7 +14,7 @@ db.init_app(app)
 api = Api(app)
 
 def do_healthcheck():
-    url = 'http://127.0.0.1:5001/reportes/healthcheck'
+    url = 'http://127.0.0.1:5000/reportes/healthcheck'
     # response = requests.get(url)
     try:
         response = requests.get(url)
@@ -27,6 +27,6 @@ def do_healthcheck():
         return err.response.status_code
 
 scheduler = APScheduler()
-scheduler.add_job(id = 'Do a health check to reports', func = do_healthcheck, trigger = 'interval', seconds = 10)
+scheduler.add_job(id = 'Do a health check to reports', func = do_healthcheck, trigger = 'interval', seconds = 300)
 scheduler.start()
 
